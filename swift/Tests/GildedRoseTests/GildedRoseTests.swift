@@ -46,13 +46,13 @@ class GildedRoseTests: XCTestCase {
         XCTAssertEqual(50, app.items[0].quality);
     }
     
-    func testSulfurasDoesNotUpdateQualityOrSellIn(){
+    func testSulfurasDoesNotUpdateSellInAndQualityIsEighty(){
         let items = [Item(name: "Sulfuras, Hand of Ragnaros", sellIn: 10, quality: 10)]
         let app = GildedRose(items: items);
         
         app.updateQuality();
         XCTAssertEqual(10, app.items[0].sellIn);
-        XCTAssertEqual(10, app.items[0].quality);
+        XCTAssertEqual(80, app.items[0].quality);
     }
     
     func testBackstagePassIncreasesByTwoWithTenDaysRemaining(){
@@ -130,7 +130,23 @@ class GildedRoseTests: XCTestCase {
     }
     
     
+    func testConjuredDecreaseQualityByTwo(){
+        let items = [Item(name: "Conjured", sellIn: 1, quality: 10)]
+        let app = GildedRose(items: items);
     
+        app.updateQuality();
+        XCTAssertEqual(0, app.items[0].sellIn);
+        XCTAssertEqual(8, app.items[0].quality);
+    }
+    
+    func testConjuredItemQualityNeverDropsBelowZero() {
+        let items = [Item(name: "Conjured", sellIn: 1, quality: 1)]
+        let app = GildedRose(items: items);
+    
+        app.updateQuality();
+        XCTAssertEqual(0, app.items[0].sellIn);
+        XCTAssertEqual(0, app.items[0].quality);
+    }
     
     
     
